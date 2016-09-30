@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Collections.Generic;
 
 /**
  * Game Controller
@@ -12,28 +13,33 @@ using System.Collections;
  **/
 public class GameController : MonoBehaviour {
 
+	private Spawner spawner;
+	private Dictionary<int, Dictionary<int, int>> teamTeamKillRecord;
+
 	// Use this for initialization
 	void Start () {
-	
+		spawner = GetComponent<Spawner> ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (winCondition()) {
+		if (WinCondition ()) {
 			SceneManager.LoadScene ("MainMenu");
-		} else if(loseCondition())  {
+		} else if (LoseCondition ()) {
+		} else {
+			spawner.Spawn ();
 		}
 
 	}
 
-	bool winCondition() {
-		if (GameObject.FindGameObjectsWithTag("Eagle").Length == 0) {
-			return true;
-		}
+	bool WinCondition() {
+//		if (GameObject.FindGameObjectsWithTag("Eagle").Length == 0) {
+//			return true;
+//		}
 		return false;
 	}
 
-	bool loseCondition() {
+	bool LoseCondition() {
 		return false;
 	}
 

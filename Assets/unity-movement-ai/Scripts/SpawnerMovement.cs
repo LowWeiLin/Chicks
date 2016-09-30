@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Spawner : MonoBehaviour {
+public class SpawnerMovement : MonoBehaviour {
 
     public Transform obj;
     public Vector2 objectSizeRange = new Vector2(1, 2);

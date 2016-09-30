@@ -56,21 +56,55 @@ public class Formation : MonoBehaviour {
 
 		formationOffsets.Clear ();
 
-		// Cone shaped
-		Vector3 singleOffset = new Vector3 (-2, 0, 0);
-		for (int i=1 ; i<=GetNumUnits() ; i++) {
-			if (GetNumUnits () == formationOffsets.Count)
+
+//		// Single Circle
+//		Vector3 singleOffset = new Vector3 (-1, 0, 0);
+//		for (int i=1 ; i<=GetNumUnits() ; i++) {
+//			formationOffsets.Add (Quaternion.Euler (0f, 0f, (i-1f)/GetNumUnits()*360f) * (singleOffset * GetNumUnits()/5f));
+//		}
+
+		// Multiple circles
+		Vector3 singleOffset = new Vector3 (-1, 0, 0);
+		int j = 2;
+		int n = 0;
+		while (true) {
+			if (n >= GetNumUnits()) {
 				break;
-			formationOffsets.Add (singleOffset * i);
-			if (GetNumUnits () == formationOffsets.Count)
+			}
+			int numLeft = (int)Mathf.Pow (2, j);
+			if (GetNumUnits() - n  < numLeft) {
+				numLeft = GetNumUnits () - n;
+			}
+			for (int i = 0; i < Mathf.Pow (2, j); i++) {
+				
+				formationOffsets.Add (Quaternion.Euler (0f, 0f, (360f/numLeft) * (i-1)) * (singleOffset * (j-1)));
+				n++;
+				if (n >= GetNumUnits()) {
+					break;
+				}
+			}
+			if (n >= GetNumUnits()) {
 				break;
-			formationOffsets.Add (Quaternion.Euler (0f, 0f, 30f) * (singleOffset * i));
-			if (GetNumUnits () == formationOffsets.Count)
-				break;
-			formationOffsets.Add (Quaternion.Euler (0f, 0f, -30f) * (singleOffset * i));
-			if (GetNumUnits () == formationOffsets.Count)
-				break;
+			}
+			j++;
 		}
+
+
+//		// Cone shaped
+//		Vector3 singleOffset = new Vector3 (-2, 0, 0);
+//		for (int i=1 ; i<=GetNumUnits() ; i++) {
+//			if (GetNumUnits () == formationOffsets.Count)
+//				break;
+//			formationOffsets.Add (singleOffset * i);
+//			if (GetNumUnits () == formationOffsets.Count)
+//				break;
+//			formationOffsets.Add (Quaternion.Euler (0f, 0f, 30f) * (singleOffset * i));
+//			if (GetNumUnits () == formationOffsets.Count)
+//				break;
+//			formationOffsets.Add (Quaternion.Euler (0f, 0f, -30f) * (singleOffset * i));
+//			if (GetNumUnits () == formationOffsets.Count)
+//				break;
+//		}
 
 		// Line
 //		Vector3 singleOffset = new Vector3 (-1,0, 0);
@@ -204,7 +238,7 @@ public class Formation : MonoBehaviour {
 		for (int i=0 ; i<cost.GetLength(0) ; i++) {
 			for (int j=0 ; j<cost.GetLength(1) ; j++) {
 				Vector3 worldOffsetPos = transform.position + transform.TransformDirection(formationOffsetsList[i]);
-				float relativeDist = Mathf.Pow((worldOffsetPos - unitsList[j].transform.position).magnitude, 16);
+				float relativeDist = Mathf.Pow((worldOffsetPos - unitsList[j].transform.position).magnitude, 20);
 				cost[j,i] = relativeDist;
 				//Debug.Log ("Cost Mat: " + i + "," + j + " " + cost[i,j]);
 			}

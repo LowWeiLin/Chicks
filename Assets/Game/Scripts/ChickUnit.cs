@@ -15,7 +15,7 @@ using System.Collections;
  * Gets killed on contact with Eagle Unit
  * 
  **/
-public class ChickUnit : MonoBehaviour {
+public class ChickUnit : Unit {
 
 	public float groupLookDist = 0.5f;
 
@@ -28,6 +28,8 @@ public class ChickUnit : MonoBehaviour {
 	GameObject henUnit;
 	Rigidbody henUnitRigidBody;
 	Formation formation;
+
+	private Gun gun;
 
 	// Use this for initialization
 	void Start () {
@@ -44,6 +46,8 @@ public class ChickUnit : MonoBehaviour {
 		// Join Formation
 		formation = henUnit.GetComponent<Formation> ();
 		formation.JoinFormation (this.gameObject);
+
+		gun = GetComponent<Gun> ();
 	}
 
 	// Update is called once per frame
@@ -74,9 +78,12 @@ public class ChickUnit : MonoBehaviour {
 		{
 			steeringBasics.lookAtDirection(henUnit.transform.rotation);
 		}
+
+
+		gun.Shoot (transform.rotation * new Vector3(1,0,0));
 	}
 
-	public void Die() {
+	public override void Die() {
 		formation.LeaveFormation (this.gameObject);
 		GameObject.Destroy (this.gameObject);
 	}
